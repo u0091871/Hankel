@@ -1,0 +1,41 @@
+clear all
+close all
+clc
+
+
+load s0471_rem.mat
+[ch,samp] = size(val);
+signal = val;
+clear val
+
+heartbeat = signal(1,55:570);
+
+
+%% Step 1: Arrange data points in LxM Hankel Matrix H
+
+N = length(heartbeat);
+L = round(N/2);
+M = N - L + 1;
+
+H = zeros(L,M);
+
+for i = 1:L
+    
+   H(i,:) = heartbeat(i:i+M-1); 
+    
+end
+
+
+%% Step 2: Compute the SVD of H
+
+[U,S,V] = svd(H);
+
+%% Step 3
+E = zeros(1, (L-1)/2);
+for k = 1:(L-1)/2
+    U_up = U(2:end,:);
+    U_down = U(1:end-1,:);
+    U_tb_k = [U_up U_down];
+    [Y, G, W] = svd(U_tb_k);
+    E(k) = 
+end
